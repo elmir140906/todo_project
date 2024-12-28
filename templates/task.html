@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Task List</title>
+    <link rel="stylesheet" href="{% static 'task.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>{{list_name}}</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/signin">Sign In</a>
+                <a href="/signup">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Tasks in: {{ task_list.name }}</h2>
+
+        <div class="tasks-grid">
+            {% if tasks %}
+                {% for task in tasks %}
+                    <div class="task-item">
+                        <p>{{ task.description }}</p>
+                        <div class="task-actions">
+                            <form action="/task/delete/{{task.id}}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                            <form action="/task/{{task.id}}" method="POST">
+                                {% csrf_token %}
+                                {% if task.is_done %} 
+                                    <button type="submit" class="btn done-btn">&#9989;</button>
+                                {% else %}
+                                    <button type="submit" class="btn done-btn">&#10006;</button> 
+                                {% endif %} 
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No tasks available. Add some tasks to get started!</p>
+            {% endif %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="create-task-form">
+            <h3>Add New Task</h3>
+            <form action="/todo/add_task/{{list_id}}" method="POST">
+                {% csrf_token %}
+                <textarea name="description" placeholder="Enter task description..." required></textarea>
+                <button type="submit" class="btn create-btn">Create Task</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoUp</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>TodoApp</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="/logout">Logout</a>
+                <a href="/lists">Views Your Tasks</a>
+            {% else %}
+                <a href="/signin">Sign In</a>
+                <a href="/signup">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+        {% if user.is_authenticated %}
+            <h2>Welcome back, {{ user.username }}!</h2>
+            <p>Ready to tackle your tasks? Click on "Views Your Tasks" to get started!</p>
+        {% else %}
+            <h2>Welcome to TodoUp</h2>
+            <p>Keep track of your tasks effortlessly. Please sign in or create an account to get started.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

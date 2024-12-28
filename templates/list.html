@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoApp - Your Task Lists</title>
+    <link rel="stylesheet" href="{% static 'list.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>TodoApp</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/signin">Sign In</a>
+                <a href="/signup">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Your Todo Lists</h2>
+
+        <!-- Add List Form -->
+        {% if user.is_authenticated %}
+        <div class="create-list-form">
+            <h3>Create a New List</h3>
+            <form action="/add_list" method="POST">
+                {% csrf_token %}
+                <label for="list-name">List Name (Category):</label>
+                <input type="text" id="list-name" name="name" required>
+                <button type="submit" class="btn create-btn">Create List</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <div class="task-lists">
+            {% if lists %}
+                {% for list in lists %}
+                    <div class="task-list-item">
+                        <a href="/todo/{{ list.id }}">{{ list.name }}</a>
+                        <p>{{ list.date }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have no task lists yet. Create one to get started!</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
