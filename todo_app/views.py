@@ -23,8 +23,6 @@ def signup(request):
             else:
                 new_user=User.objects.create_user(username=username, email=email, password=password)
                 new_user.save()
-                #user_login=auth.authenticate(username=username, password=password)
-                #auth.login(request,user_login)
                 return redirect("/signin")
         else:
             return redirect("/signup")
