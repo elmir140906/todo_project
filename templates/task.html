@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="{% static 'task.css' %}">
 </head>
 <body>
+    
     <div class="navbar">
         <h1>{{list_name}}</h1>
         <div class="nav-links">
+            <a href="/lists">Your Todo Lists</h1>
             {% if user.is_authenticated %}
                 <a href="/logout">Logout</a>
             {% else %}
